@@ -3,6 +3,7 @@
 # example:
 # import readableSTL
 # p1=readableSTL.load("cube.stl")
+# p1.saveas("text.txt")
 # print(p1.getdata().normals)
 # print(p1.getdata().points)
 
