@@ -1,7 +1,3 @@
 import readableSTL
-
 p1=readableSTL.load("bench/cube.stl")
-normals=p1.getdata().normals
-points=p1.getdata().points
-
-print(len(points))
+p1.saveas("bench/text.txt")

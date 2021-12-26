@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>view</title>
+</head>
+<style>
+    html,body,div,canvas {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    canvas {
+        background-color: bisque;
+    }
+</style>
+
+<body>
+    <canvas id="canvas"></canvas>
+</body>
+<script>
+    var canvas = document.getElementById("canvas");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    var context = canvas.getContext("2d");
+
+context.beginPath();
+context.moveTo(100, 100);
+context.lineTo(100, 300);
+context.lineTo(300, 400);
+context.closePath();
+context.fillStyle = "#cfdee3";
+context.fill();
+
+function readTextFile(file)
+{
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", file, false);
+    rawFile.onreadystatechange = function ()
+    {
+        if(rawFile.readyState === 4)
+        {
+            if(rawFile.status === 200 || rawFile.status == 0)
+            {
+                var allText = rawFile.responseText;
+                alert(allText);
+            }
+        }
+    }
+    rawFile.send(null);
+}
+
+</script>
+
+</html>
