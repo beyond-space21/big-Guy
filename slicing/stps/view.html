@@ -8,7 +8,10 @@
     <title>view</title>
 </head>
 <style>
-    html,body,div,canvas {
+    html,
+    body,
+    div,
+    canvas {
         margin: 0;
         padding: 0;
         overflow: hidden;
@@ -28,31 +31,65 @@
     canvas.height = window.innerHeight;
     var context = canvas.getContext("2d");
 
-context.beginPath();
-context.moveTo(100, 100);
-context.lineTo(100, 300);
-context.lineTo(300, 400);
-context.closePath();
-context.fillStyle = "#cfdee3";
-context.fill();
+    var txt = readTextFile("/bench/text.txt");
+    if (txt != 'err') {
+        extract(txt)
+    } else {
+        console.log(txt);
+    }
 
-function readTextFile(file)
-{
-    var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, false);
-    rawFile.onreadystatechange = function ()
-    {
-        if(rawFile.readyState === 4)
-        {
-            if(rawFile.status === 200 || rawFile.status == 0)
-            {
-                var allText = rawFile.responseText;
-                alert(allText);
+    function readTextFile(file) {
+        var rawFile = new XMLHttpRequest();
+        var data;
+        rawFile.open("GET", file, false);
+        rawFile.onreadystatechange = function () {
+            if (rawFile.readyState === 4) {
+                if (rawFile.status === 200 || rawFile.status == 0) {
+                    data = rawFile.responseText;
+                } else {
+                    data = 'err'
+                }
             }
         }
+        rawFile.send(null);
+        return data;
     }
-    rawFile.send(null);
-}
+    function extract(file) {
+        var points = []
+        var normals = []
+        var line = 0
+        var pointer = 0
+
+        for (var i = 0; line != 8; i++) {
+            if (file[i] === '\n') {
+                line++
+            }
+            pointer = i + 1
+        }
+
+        console.log(pointer);
+
+        snip = ''
+        for (pointer; file[pointer] != '\n'; pointer++) {
+            if (file[pointer] != ' ') {
+                snip = snip.concat(file[pointer])
+            } else {
+                normals.push(parseFloat(snip))
+                snip = ''
+            }
+        }
+        normals.push(parseFloat(snip))
+console.log(normals);
+    }
+    function drwa(x1, y1, x2, y2, x3, y3) {
+        context.beginPath();
+        context.moveTo(x1, y1);
+        context.lineTo(x2, y2);
+        context.lineTo(x3, y3);
+        context.closePath();
+        context.fillStyle = "#cfdee3";
+        context.fill();
+    }
 
 </script>
 
