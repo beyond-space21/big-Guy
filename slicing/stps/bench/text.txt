@@ -1,5 +1,7 @@
 bench/text.txt
 
+triangles:12
+
 |Facet normal|
 |vector 1|
 |vector 2|

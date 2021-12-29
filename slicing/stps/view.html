@@ -57,29 +57,50 @@
     function extract(file) {
         var points = []
         var normals = []
-        var line = 0
+        var totalTriangles = 0
         var pointer = 0
+        var line = 0
 
-        for (var i = 0; line != 8; i++) {
+        for (var i = 0; line != 10; i++) {
             if (file[i] === '\n') {
                 line++
+            }
+            if(file[i]===':'){
+                var s=''
+                for(var e=1;file[i+e+1]!='\n';e++){
+                s=s.concat(file[i+e])
+                }
+                totalTriangles=parseInt(s)
             }
             pointer = i + 1
         }
 
-        console.log(pointer);
-
-        snip = ''
-        for (pointer; file[pointer] != '\n'; pointer++) {
-            if (file[pointer] != ' ') {
-                snip = snip.concat(file[pointer])
-            } else {
-                normals.push(parseFloat(snip))
+        console.log(totalTriangles);
+        ///////////////////////////////////////////////////////////////////
+        for (var i = 0; i < totalTriangles; i++) {
+            var chips=[]
+            for (var dataline = 0; dataline < 4; dataline++) {
                 snip = ''
+                for (pointer; file[pointer] != '\n' && file[pointer]; pointer++) {
+                    if (file[pointer] != ' ') {
+                        snip = snip.concat(file[pointer])
+                    } else {
+                        chips.push(parseFloat(snip))
+                        snip = ''
+                    }
+                }
+                chips.push(parseFloat(snip))
+                if (dataline == 0) {
+                    normals.push(chips)
+                    chips = []
+                }
+                pointer = pointer + 1
             }
+            points.push(chips)
+            pointer = pointer + 2
         }
-        normals.push(parseFloat(snip))
-console.log(normals);
+        console.log(points);
+        console.log(normals);
     }
     function drwa(x1, y1, x2, y2, x3, y3) {
         context.beginPath();
