@@ -43,6 +43,7 @@ def read_header(f):
 def write_as_ascii(outfilename):
     f = open(outfilename, "w")
     f.write (outfilename+"\n\n")
+    f.write ("triangles:"+str(len(triangles))+"\n\n")
     f.write ("|Facet normal|\n|vector 1|\n|vector 2|\n|vector3|\n")
     for n  in range(len(triangles)):
         f.write ("\n\n{} {} {}\n".format(normals[n][0],normals[n][1],normals[n][2]))

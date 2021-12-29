@@ -31,13 +31,17 @@
     canvas.height = window.innerHeight;
     var context = canvas.getContext("2d");
 
-    var txt = readTextFile("/bench/text.txt");
-    if (txt != 'err') {
-        extract(txt)
-    } else {
-        console.log(txt);
+    function getdata(file) {
+        var txt = readTextFile(file);
+        if (txt != 'err') {
+            extract(txt)
+        } else {
+            console.log(txt);
+        }
     }
 
+    var points = []
+    var normals = []
     function readTextFile(file) {
         var rawFile = new XMLHttpRequest();
         var data;
@@ -55,33 +59,30 @@
         return data;
     }
     function extract(file) {
-        var points = []
-        var normals = []
         var totalTriangles = 0
         var pointer = 0
         var line = 0
 
-        for (var i = 0; line != 10; i++) {
+        for (var i = 0; line != 10; i++) {//to skip to the start of actual data
             if (file[i] === '\n') {
                 line++
             }
-            if(file[i]===':'){
-                var s=''
-                for(var e=1;file[i+e+1]!='\n';e++){
-                s=s.concat(file[i+e])
+            if (file[i] === ':') {//to read number of total triangles
+                var s = ''      //if dynamic metadata to be read, json need to be implemented on both write and read functions
+                for (var e = 1; file[i + e + 1] != '\n'; e++) {
+                    s = s.concat(file[i + e])
                 }
-                totalTriangles=parseInt(s)
+                totalTriangles = parseInt(s)
             }
             pointer = i + 1
         }
-
         console.log(totalTriangles);
-        ///////////////////////////////////////////////////////////////////
-        for (var i = 0; i < totalTriangles; i++) {
-            var chips=[]
-            for (var dataline = 0; dataline < 4; dataline++) {
+
+        for (var i = 0; i < totalTriangles; i++) { //looped for total number of triangles
+            var chips = []
+            for (var dataline = 0; dataline < 4; dataline++) { //looped for total number of data for eacd triangle
                 snip = ''
-                for (pointer; file[pointer] != '\n' && file[pointer]; pointer++) {
+                for (pointer; file[pointer] != '\n' && file[pointer]; pointer++) { //looped for each cordinate on one line
                     if (file[pointer] != ' ') {
                         snip = snip.concat(file[pointer])
                     } else {
@@ -90,18 +91,21 @@
                     }
                 }
                 chips.push(parseFloat(snip))
-                if (dataline == 0) {
+                if (dataline == 0) { //save first line data as normals
                     normals.push(chips)
                     chips = []
                 }
                 pointer = pointer + 1
             }
-            points.push(chips)
+            points.push(chips) //save other data as points
             pointer = pointer + 2
         }
-        console.log(points);
-        console.log(normals);
     }
+
+    getdata("/bench/text.txt")
+    console.log(points);
+    console.log(normals);
+
     function drwa(x1, y1, x2, y2, x3, y3) {
         context.beginPath();
         context.moveTo(x1, y1);
