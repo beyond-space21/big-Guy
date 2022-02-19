@@ -18,104 +18,173 @@
     }
 
     canvas {
-        background-color: bisque;
+        background-color: rgb(0, 0, 0);
     }
 </style>
 
 <body>
     <canvas id="canvas"></canvas>
 </body>
+<script src="file.js"></script>
+<script src="draw.js"></script>
 <script>
     var canvas = document.getElementById("canvas");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
     var context = canvas.getContext("2d");
 
-    function getdata(file) {
-        var txt = readTextFile(file);
-        if (txt != 'err') {
-            extract(txt)
+    const data = getdata("/bench/test4.txt")
+
+    var x = []
+    var y = []
+    var z = []
+    var pointAngles = []
+
+    for (var i = 0; i < data.points.length; i++) {
+        x.push(data.points[i][0])
+        x.push(data.points[i][3])
+        x.push(data.points[i][6])
+
+        y.push(data.points[i][1])
+        y.push(data.points[i][4])
+        y.push(data.points[i][7])
+
+        z.push(data.points[i][2])
+        z.push(data.points[i][5])
+        z.push(data.points[i][8])
+    }
+
+    //get dimension limits
+    var xmax = 0, xmin = 0, ymin = 0, ymax = 0, zmin = 0, zmax = 0;
+
+    var st = true
+    var min, max
+    for (var i = 0; i < x.length; i++) {
+        seg(x[i])
+        xmin = min
+        xmax = max
+    }
+    st = true
+    min = 0
+    max = 0
+    for (var i = 0; i < y.length; i++) {
+        seg(y[i])
+        ymin = min
+        ymax = max
+    }
+    st = true
+    min = 0
+    max = 0
+    for (var i = 0; i < z.length; i++) {
+        seg(z[i])
+        zmin = min
+        zmax = max
+    }
+    function seg(num) {
+        if (st) {
+            min = num
+            max = num
+            st = false
         } else {
-            console.log(txt);
+            if (num < min) {
+                min = num
+            } else if (num > max) {
+                max = num
+            }
         }
     }
 
-    var points = []
-    var normals = []
-    function readTextFile(file) {
-        var rawFile = new XMLHttpRequest();
-        var data;
-        rawFile.open("GET", file, false);
-        rawFile.onreadystatechange = function () {
-            if (rawFile.readyState === 4) {
-                if (rawFile.status === 200 || rawFile.status == 0) {
-                    data = rawFile.responseText;
-                } else {
-                    data = 'err'
+    //initializing cordinates from 0
+    for (var i = 0; i < x.length; i++) {
+        x[i] = x[i] - xmin
+        y[i] = y[i] - ymin
+        z[i] = z[i] - zmin
+    }
+
+    //draw the triangles
+    // draw(x, y, z, 10)//x,y,z,scl
+
+    //get centre of the case
+    var cse = { x: (xmax - xmin) / 2, y: (ymax - ymin) / 2, z: (zmax - zmin) / 2 }
+
+    var objang = 0
+    // rotate(objang)
+
+    function addinangleloop(a, b) {
+        var nv = a + b
+        if (nv > 360) {
+            nv = nv - 361
+        } else if (nv < 0) {
+            nv = nv + 361
+        }
+        return nv
+    }
+
+    // function rotate(angle) {
+    //     angle= (angle/180)*Math.PI
+    //     cos=Math.cos(angle)
+    //     sin=Math.sin(angle)
+    //     for (var i = 0; i < x.length; i++) {
+    //         newpoint = rotation(angle, x[i] - cse.x, y[i] - cse.y,cos,sin)
+    //         x[i] = newpoint.x + cse.x
+    //         y[i] = newpoint.y + cse.y
+    //     }
+    //     draw(x, y, z, 5)
+    // }
+
+    // function rotation(o, x1, y1,cos,sin) {
+    //     ma = multiply([[cos, -sin], [sin, cos]], [[x1], [y1]])
+    //     return { x: ma[0][0], y: ma[1][0] }
+    // }
+rotate(90,0,0)
+        setInterval(function(){
+            objang = addinangleloop(objang,0.0005) 
+            rotate(objang,objang,objang)
+        },1) 
+window.addEventListener('mousedown',function(e){
+    console.log(objang );
+})
+    function rotate(o0,o1,o2) {
+        o0 = (o0 / 180) * Math.PI
+        o1 = (o1 / 180) * Math.PI
+        o2 = (o2 / 180) * Math.PI
+        cos=[Math.cos(o0),Math.cos(o1),Math.cos(o2)]
+        sin=[Math.sin(o0),Math.sin(o1),Math.sin(o2)]
+
+        for (var i = 0; i < x.length; i++) {
+            newpoint = rotation(x[i] - cse.x, y[i] - cse.y, z[i] - cse.z,cos,sin)
+            x[i] = newpoint.x + cse.x
+            y[i] = newpoint.y + cse.y
+            z[i] = newpoint.z + cse.z
+        }
+        draw(x, y, y, 5)
+    }
+    // a b g
+    function rotation(x1, y1 ,z1,cos,sin) {
+        ma = multiply(
+            [
+                [cos[1]*cos[2],sin[0]*sin[1]*cos[2]-cos[0]*sin[2],cos[0]*sin[1]*cos[2]+sin[0]*sin[2]],
+                [cos[1]*sin[2],sin[0]*sin[1]*sin[2]+cos[0]*cos[2],cos[0]*sin[1]*sin[2]-sin[0]*cos[2]],
+                [-sin[1],sin[0]*cos[1],cos[0]*cos[1]]
+        
+        ], [[x1], [y1], [z1]])
+        return { x: ma[0][0], y: ma[1][0], z: ma[2][0] }
+    }
+
+    function multiply(a, b) {//https://stackoverflow.com/questions/27205018/multiply-2-matrices-in-javascript
+        var aNumRows = a.length, aNumCols = a[0].length,
+            bNumRows = b.length, bNumCols = b[0].length,
+            m = new Array(aNumRows);  // initialize array of rows
+        for (var r = 0; r < aNumRows; ++r) {
+            m[r] = new Array(bNumCols); // initialize the current row
+            for (var c = 0; c < bNumCols; ++c) {
+                m[r][c] = 0;             // initialize the current cell
+                for (var i = 0; i < aNumCols; ++i) {
+                    m[r][c] += a[r][i] * b[i][c];
                 }
             }
         }
-        rawFile.send(null);
-        return data;
+        return m;
     }
-    function extract(file) {
-        var totalTriangles = 0
-        var pointer = 0
-        var line = 0
-
-        for (var i = 0; line != 10; i++) {//to skip to the start of actual data
-            if (file[i] === '\n') {
-                line++
-            }
-            if (file[i] === ':') {//to read number of total triangles
-                var s = ''      //if dynamic metadata to be read, json need to be implemented on both write and read functions
-                for (var e = 1; file[i + e + 1] != '\n'; e++) {
-                    s = s.concat(file[i + e])
-                }
-                totalTriangles = parseInt(s)
-            }
-            pointer = i + 1
-        }
-        console.log(totalTriangles);
-
-        for (var i = 0; i < totalTriangles; i++) { //looped for total number of triangles
-            var chips = []
-            for (var dataline = 0; dataline < 4; dataline++) { //looped for total number of data for eacd triangle
-                snip = ''
-                for (pointer; file[pointer] != '\n' && file[pointer]; pointer++) { //looped for each cordinate on one line
-                    if (file[pointer] != ' ') {
-                        snip = snip.concat(file[pointer])
-                    } else {
-                        chips.push(parseFloat(snip))
-                        snip = ''
-                    }
-                }
-                chips.push(parseFloat(snip))
-                if (dataline == 0) { //save first line data as normals
-                    normals.push(chips)
-                    chips = []
-                }
-                pointer = pointer + 1
-            }
-            points.push(chips) //save other data as points
-            pointer = pointer + 2
-        }
-    }
-
-    getdata("/bench/text.txt")
-    console.log(points);
-    console.log(normals);
-
-    function drwa(x1, y1, x2, y2, x3, y3) {
-        context.beginPath();
-        context.moveTo(x1, y1);
-        context.lineTo(x2, y2);
-        context.lineTo(x3, y3);
-        context.closePath();
-        context.fillStyle = "#cfdee3";
-        context.fill();
-    }
-
 </script>
-
 </html>
