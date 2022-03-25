@@ -1,0 +1,9 @@
+This firmware is for 3D printers with networking capabilities;
+
+>SD reading
+>Stepper movement executing
+>GUI of process data and info data via IP address
+>Calibration
+>Cloud to store Gcode files
+>Get data from DB and store in SD card
+>Data manupulation
