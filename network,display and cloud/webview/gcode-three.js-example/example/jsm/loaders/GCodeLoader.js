@@ -69,10 +69,11 @@ class GCodeLoader extends Loader {
 
 		let currentLayer = undefined;
 
-		const pathMaterial = new LineBasicMaterial( { color: 0xFF0000 } );
+		const pathMaterial = new LineBasicMaterial( { color: 0x00000000 } );
 		pathMaterial.name = 'path';
 
-		const extrudingMaterial = new LineBasicMaterial( { color: 0x00FF00 } );
+		// const extrudingMaterial = new LineBasicMaterial( { color: 0x50c878 } );
+		const extrudingMaterial = new LineBasicMaterial( { color: 0x1B842C } );
 		extrudingMaterial.name = 'extruded';
 
 		function newLayer( line ) {
@@ -202,9 +203,11 @@ class GCodeLoader extends Loader {
 
 			const geometry = new BufferGeometry();
 			geometry.setAttribute( 'position', new Float32BufferAttribute( vertex, 3 ) );
-			const segments = new LineSegments( geometry, extruding ? extrudingMaterial : pathMaterial );
+			// if(extruding){
+			const segments = new LineSegments( geometry,extruding ? extrudingMaterial : pathMaterial );
 			segments.name = 'layer' + i;
 			object.add( segments );
+			// }
 
 		}
 
@@ -260,3 +263,12 @@ class GCodeLoader extends Loader {
 }
 
 export { GCodeLoader };
+
+function componentToHex(c) {
+	var hex = c.toString(16);
+	return hex.length == 1 ? "0" + hex : hex;
+  }
+  
+  function rgbToHex(r, g, b) {
+	return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+  }
