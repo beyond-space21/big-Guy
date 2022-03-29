@@ -20,3 +20,5 @@ timer_txt.style.marginLeft = 95 + 'px'
 
 document.getElementsByClassName('view')[0].style.width = window.innerWidth - 400 + 'px'
 document.getElementsByClassName('view')[0].style.height=window.innerHeight  + 'px'
+
+document.getElementById('iframe_view').src="view/src/webgl_loader_gcode.html"
