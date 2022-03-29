@@ -9,6 +9,11 @@ import {
 	Loader
 } from 'three';
 
+var element = document.createElement('div')
+element.style= "position:fixed;font-weight: 700;font-size: 20px;color: #FFFFFF;"
+element.innerHTML= "LOADING..."
+document.body.appendChild(element)
+
 /**
  * GCodeLoader is used to load gcode files usually used for 3D printing or CNC applications.
  *
@@ -27,6 +32,8 @@ class GCodeLoader extends Loader {
 		this.splitLayer = false;
 
 	}
+
+
 
 	load( url, onLoad, onProgress, onError ) {
 
@@ -58,7 +65,11 @@ class GCodeLoader extends Loader {
 
 			}
 
-		}, onProgress, onError );
+		}, function(g){
+			if(g.loaded==g.total){
+				console.log('loaded');
+			}
+		}, onError );
 
 	}
 
