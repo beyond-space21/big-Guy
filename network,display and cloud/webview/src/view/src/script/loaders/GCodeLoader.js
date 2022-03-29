@@ -9,17 +9,19 @@ import {
 	Loader
 } from 'three';
 
-// const elm_link = document.createTextNode('link')
-// elm_link.type = 'text/css'
-// elm_link.rel = 'stylesheet'
-// elm_link.href = 'stylesheet/GCodeLoader.css'
-// document.getElementsByTagName('head')[0].appendChild(elm_link)
-
 const element = document.createElement('div')
-element.className = 'load'
-element.innerHTML= "Getting model from memory..."
+element.style = 'position:fixed;font-weight: 700;font-size: 20px;color: #FFFFFF;Top:50%;Left:20%;'
+// element.innerHTML= "Getting model from memory..."
 document.body.appendChild(element)
 
+const element1 = document.createElement('img')
+element1.src = 'assets/load.gif'
+element1.style = 'position:relative;Top:10px;Right:10px'
+element.appendChild(element1)
+
+const element2 = document.createElement('span')
+element2.innerHTML= " Getting model from memory..."
+element.appendChild(element2)
 /**
  * GCodeLoader is used to load gcode files usually used for 3D printing or CNC applications.
  *
@@ -73,7 +75,7 @@ class GCodeLoader extends Loader {
 
 		}, function(g){
 			if(g.loaded==g.total){
-				element.innerHTML= "Loading the data..."
+				element2.innerHTML= "Loading the data..."
 			}
 		}, onError );
 
