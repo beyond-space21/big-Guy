@@ -1,0 +1,119 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #363636;
+    font-family: 'Tomorrow', sans-serif;
+}
+
+html {
+    margin: 0;
+}
+
+.side_pan {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 400px;
+    height: 100%;
+    border: 1px;
+    border-top: 0;
+    border-right: 0;
+    border-bottom: 0;
+    border-style: solid;
+    border-color: rgb(255, 255, 255);
+    /* background-color: bisque;  */
+}
+
+.canvas_time1 {
+    margin-top: 30px;
+    margin-left: 30px;
+    background-color: #363636;
+    border-radius: 50%;
+}
+
+.hor_line {
+    height: 0.5px;
+    margin: 10px;
+    margin-top: 30px;
+    background-color: aliceblue;
+}
+
+.font1 {
+    font-weight: 700;
+    font-size: 20px;
+    color: #FFFFFF;
+}
+
+.font2 {
+    font-weight: 400;
+    font-size: 17px;
+    color: #FFFFFF;
+    padding-left: 10px;
+}
+
+.font3 {
+    font-weight: 700;
+    font-size: 20px;
+    color: #959595;
+}
+
+.font4 {
+    font-weight: 400;
+    font-size: 20px;
+    white-space: pre;
+    color: #FFFFFF;
+}
+
+.font5 {
+    font-weight: 400;
+    font-size: 13px;
+    white-space: pre;
+    color: #FFFFFF;
+}
+
+.font6 {
+    font-weight: 700;
+    font-size: 20px;
+    color: #53C9F5;
+}
+
+.P_S {
+    display: grid;
+    grid-template: 'auto auto auto';
+    /* width: fit-content; */
+    margin-left: 40px;
+}
+
+.temp_grid {
+    display: grid;
+    grid-template: 'auto auto auto auto auto auto auto';
+}
+
+.centre {
+    text-align: center;
+}
+
+.h {
+
+    background-color: #959595;
+}
+
+.ver_line {
+    height: 150px;
+    width: 1px;
+    background-color: #FFFFFF;
+}
+
+.timer_txt{
+    position: absolute;
+    
+}
+
+.view{
+    display: block;
+    border: none; 
+    overflow-y: auto; 
+    overflow-x: hidden;
+    background-color: #53C9F5;
+}
