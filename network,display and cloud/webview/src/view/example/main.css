@@ -8,12 +8,17 @@ body {
 	overscroll-behavior: none;
 }
 
-a {
+.info .file {
 	color: #ff0;
 	text-decoration: none;
 }
 
-a:hover {
+.info .path {
+	text-decoration: none;
+	color: #fff;	
+}
+
+.info .path:hover {
 	text-decoration: underline;
 }
 

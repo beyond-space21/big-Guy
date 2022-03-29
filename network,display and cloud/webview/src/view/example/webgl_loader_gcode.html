@@ -9,8 +9,8 @@
 </head>
 
 <body>
-	<div id="info">
-		<a href="https://threejs.org" target="_blank" rel="noopener">Rajanand.js</a> - GCode loader
+	<div id="info" class="info">
+		<a class="file" target="_blank" rel="noopener">file</a>: <a class="path" id="file_path"></a>
 	</div>
 
 	<!-- Import maps polyfill -->
@@ -39,6 +39,10 @@
 
 		function init() {
 
+			const file_path = 'models/gcode/captain.gcode'
+			document.getElementById('file_path').innerHTML = file_path
+			// document.getElementById('file_path').href = file_path
+
 			const container = document.createElement('div');
 			document.body.appendChild(container);
 
@@ -55,7 +59,7 @@
 			scene.add(grid);
 
 			const loader = new GCodeLoader();
-			loader.load('models/gcode/captain.gcode', function (object) {
+			loader.load(file_path, function (object) {
 
 				object.position.set(-(196+805)/2, -976/2, (246+754)/2);
 				scene.add(object);
