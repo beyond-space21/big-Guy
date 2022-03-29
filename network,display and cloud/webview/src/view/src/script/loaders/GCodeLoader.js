@@ -9,8 +9,14 @@ import {
 	Loader
 } from 'three';
 
+// const elm_link = document.createTextNode('link')
+// elm_link.type = 'text/css'
+// elm_link.rel = 'stylesheet'
+// elm_link.href = 'stylesheet/GCodeLoader.css'
+// document.getElementsByTagName('head')[0].appendChild(elm_link)
+
 const element = document.createElement('div')
-element.style= "position:fixed;font-weight: 700;font-size: 20px;color: #FFFFFF;Top:50%;Left:20%"
+element.className = 'load'
 element.innerHTML= "Getting model from memory..."
 document.body.appendChild(element)
 
