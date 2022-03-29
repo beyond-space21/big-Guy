@@ -9,9 +9,9 @@ import {
 	Loader
 } from 'three';
 
-var element = document.createElement('div')
-element.style= "position:fixed;font-weight: 700;font-size: 20px;color: #FFFFFF;"
-element.innerHTML= "LOADING..."
+const element = document.createElement('div')
+element.style= "position:fixed;font-weight: 700;font-size: 20px;color: #FFFFFF;Top:50%;Left:20%"
+element.innerHTML= "Getting model from memory..."
 document.body.appendChild(element)
 
 /**
@@ -67,7 +67,7 @@ class GCodeLoader extends Loader {
 
 		}, function(g){
 			if(g.loaded==g.total){
-				console.log('loaded');
+				element.innerHTML= "Loading the data..."
 			}
 		}, onError );
 
@@ -266,6 +266,7 @@ class GCodeLoader extends Loader {
 
 		object.quaternion.setFromEuler( new Euler( - Math.PI / 2, 0, 0 ) );
 
+		element.style.display='none'
 		return object;
 
 	}
@@ -273,12 +274,3 @@ class GCodeLoader extends Loader {
 }
 
 export { GCodeLoader };
-
-function componentToHex(c) {
-	var hex = c.toString(16);
-	return hex.length == 1 ? "0" + hex : hex;
-  }
-  
-  function rgbToHex(r, g, b) {
-	return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-  }
